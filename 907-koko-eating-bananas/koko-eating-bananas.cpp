@@ -17,13 +17,15 @@ public:
         }
         int low = 1, high = maxi;
         int mid;
+        int ans;
         while (low <= high) {
             mid = low + (high - low) / 2;
-            if (isPossible(piles, h, mid))
+            if (isPossible(piles, h, mid)) {
                 high = mid - 1;
-            else
+                ans = mid;
+            } else
                 low = mid + 1;
         }
-        return low;
+        return ans;
     }
 };
