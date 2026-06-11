@@ -1,15 +1,16 @@
 class Solution {
 public:
     long long atMost(vector<int>& nums, int k){
+        vector<int> freq(nums.size() + 1, 0);
         int left = 0;
-        unordered_map<int, int> freq;
+        int distinct = 0;
         long long cnt = 0;
 
         for(int right=0; right<nums.size(); right++){
-            freq[nums[right]]++;
-            while(freq.size()>k){
+            if(freq[nums[right]]++ == 0)    distinct++;
+            while(distinct > k){
                 freq[nums[left]]--;
-                if(freq[nums[left]] == 0) freq.erase(nums[left]);
+                if(freq[nums[left]] == 0)   distinct--;
                 left++;
             }
 
