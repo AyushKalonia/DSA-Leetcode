@@ -1,11 +1,10 @@
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& pre) {
-
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<vector<int>> adj(numCourses);
         vector<int> indegree(numCourses, 0);
 
-        for (auto &p : pre) {
+        for (auto& p : prerequisites) {
             adj[p[1]].push_back(p[0]);
             indegree[p[0]]++;
         }
