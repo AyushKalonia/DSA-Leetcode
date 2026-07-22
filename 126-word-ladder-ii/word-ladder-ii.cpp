@@ -1,9 +1,9 @@
 class Solution {
 public:
     vector<vector<string>> ans;
-    unordered_map<string, vector<string>> parent;
+    unordered_map<string, vector<string>> parents;
 
-    void dfs(string word, string beginWord, vector<string>& path) {
+    void dfs(string word, string& beginWord, vector<string>& path) {
         if (word == beginWord) {
             vector<string> temp = path;
             reverse(temp.begin(), temp.end());
@@ -11,9 +11,9 @@ public:
             return;
         }
 
-        for (string& p : parent[word]) {
-            path.push_back(p);
-            dfs(p, beginWord, path);
+        for (auto& par : parents[word]) {
+            path.push_back(par);
+            dfs(par, beginWord, path);
             path.pop_back();
         }
     }
@@ -21,60 +21,67 @@ public:
     vector<vector<string>> findLadders(string beginWord, string endWord,
                                        vector<string>& wordList) {
 
-        unordered_set<string> dict(wordList.begin(), wordList.end());
+        unordered_set<string> words(wordList.begin(), wordList.end());
 
-        if (!dict.count(endWord))
+        if (!words.count(endWord))
             return {};
-
-        unordered_map<string, int> level;
 
         queue<string> q;
         q.push(beginWord);
-        level[beginWord] = 0;
 
-        while (!q.empty()) {
+        words.erase(beginWord);
 
-            string word = q.front();
-            q.pop();
+        bool found = false;
 
-            int currLevel = level[word];
+        while (!q.empty() && !found) {
 
-            string temp = word;
+            int sz = q.size();
+            unordered_set<string> usedOnLevel;
 
-            for (int i = 0; i < temp.size(); i++) {
+            while (sz--) {
 
-                char orig = temp[i];
+                string parent = q.front();
+                q.pop();
 
-                for (char ch = 'a'; ch <= 'z'; ch++) {
+                string word = parent;
 
-                    if (ch == orig)
-                        continue;
+                for (int i = 0; i < word.size(); i++) {
 
-                    temp[i] = ch;
+                    char orig = word[i];
 
-                    if (!dict.count(temp))
-                        continue;
+                    for (char ch = 'a'; ch <= 'z'; ch++) {
 
-                    if (!level.count(temp)) {
+                        if (ch == orig)
+                            continue;
 
-                        level[temp] = currLevel + 1;
-                        parent[temp].push_back(word);
-                        q.push(temp);
-                    } else if (level[temp] == currLevel + 1) {
+                        word[i] = ch;
 
-                        parent[temp].push_back(word);
+                        if (!words.count(word))
+                            continue;
+
+                        if (!usedOnLevel.count(word)) {
+                            q.push(word);
+                            usedOnLevel.insert(word);
+                        }
+
+                        parents[word].push_back(parent);
                     }
-                }
 
-                temp[i] = orig;
+                    word[i] = orig;
+                }
+            }
+
+            for (auto& w : usedOnLevel) {
+                if (w == endWord)
+                    found = true;
+                words.erase(w);
             }
         }
 
-        if (!level.count(endWord))
+        if (!parents.count(endWord))
             return {};
 
         vector<string> path = {endWord};
-
         dfs(endWord, beginWord, path);
 
         return ans;
