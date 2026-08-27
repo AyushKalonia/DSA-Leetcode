@@ -8,7 +8,7 @@ public:
             return;
         }
 
-        if (num > 9 || sum > n) {
+        if (num > 9 || cnt + (10 - num) < k || sum > n) {
             return;
         }
 
