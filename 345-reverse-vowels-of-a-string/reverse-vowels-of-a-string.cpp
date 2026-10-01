@@ -18,11 +18,11 @@ public:
             while(l<r && !isVowel(s[l])) l++;
             while(l<r && !isVowel(s[r])) r--;
 
-            if(l<r){
+            
                 swap(s[l], s[r]);
                 l++;
                 r--;
-            }
+            
         }
         return s;
     }
