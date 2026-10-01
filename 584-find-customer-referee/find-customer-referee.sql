@@ -1,4 +1,3 @@
--- Write your PostgreSQL query statement below
-select name
-from Customer
-where referee_id  is null or referee_id <> 2
+SELECT c.name
+FROM Customer c
+WHERE c.referee_id IS NULL OR c.referee_id != 2;
