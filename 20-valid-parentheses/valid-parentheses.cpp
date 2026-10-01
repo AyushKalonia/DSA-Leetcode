@@ -6,7 +6,9 @@ public:
         for (char c : s) {
             if (c == '(' || c == '[' || c == '{') {
                 st.push(c);
-            } else {
+            }
+
+            else {
                 if (st.empty()) return false;
 
                 char top = st.top();
