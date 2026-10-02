@@ -1,26 +1,22 @@
 class Solution {
 public:
     int maxOperations(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end());
+        int n = nums.size();
 
-        int left = 0;
-        int right = nums.size() - 1;
+        unordered_map<int, int> mp;
+
         int cnt = 0;
 
-        while(left < right) {
-            int sum = nums[left] + nums[right];
-
-            if(sum == k) {
+        for(int i=0; i<n; i++){
+            int req = k-nums[i];
+            if(mp[req] > 0) {
                 cnt++;
-                left++;
-                right--;
-            }
-            else if(sum < k) {
-                left++;
+                mp[req]--;
             }
             else {
-                right--;
+                mp[nums[i]]++;
             }
+
         }
 
         return cnt;
